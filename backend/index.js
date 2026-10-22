@@ -1,6 +1,6 @@
 const express = require("express");
 const cors = require("cors");
-const { getPosts, agregarPost } = require("./consultas");
+const { getPosts, agregarPost, darLike, eliminarPost } = require("./consultas");
 
 const app = express();
 const PORT = 3000;
@@ -27,6 +27,26 @@ app.post("/posts", async (req, res) => {
     await agregarPost(titulo, url, descripcion);
 
     res.send("Post agregado con éxito");
+  } catch (error) {
+    res.status(500).send(error.message);
+  }
+});
+
+app.put("/posts/like/:id", async (req, res) => {
+  try {
+    const { id } = req.params;
+    await darLike(id);
+    res.send("Like actualizado con éxito");
+  } catch (error) {
+    res.status(500).send(error.message);
+  }
+});
+
+app.delete("/posts/:id", async (req, res) => {
+  try {
+    const { id } = req.params;
+    await eliminarPost(id);
+    res.send("Post eliminado con éxito");
   } catch (error) {
     res.status(500).send(error.message);
   }

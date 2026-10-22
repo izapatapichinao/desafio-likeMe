@@ -21,4 +21,17 @@ const agregarPost = async (titulo, img, descripcion) => {
   return result;
 };
 
-module.exports = { getPosts, agregarPost };
+const darLike = async (id) => {
+  const consulta =
+    "UPDATE posts SET likes = likes + 1 WHERE id = $1 RETURNING *";
+  const values = [id];
+  const result = await pool.query(consulta, values);
+};
+
+const eliminarPost = async (id) => {
+  const consulta = "DELETE FROM posts WHERE id = $1";
+  const values = [id];
+  const result = await pool.query(consulta, values);
+};
+
+module.exports = { getPosts, agregarPost, darLike, eliminarPost };
